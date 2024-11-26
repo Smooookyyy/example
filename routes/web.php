@@ -8,6 +8,7 @@ use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\SignatureController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\WTMDFormController;
+use App\Models\wtmdsaved;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,7 +86,7 @@ Route::middleware(['checkrole:superadmin,supervisor,officer'])->group(function (
 });
 
 Route::get('/review/hhmd/{id}', [HHMDFormController::class, 'review'])->name('review.hhmd.reviewhhmd');
-Route::get('/pdf/{id}', [PdfController::class, 'generatePDF'])->name('pdf.hhmd');
+Route::get('/pdf/hhmd/{id}', [PdfController::class, 'generatePDF'])->name('pdf.hhmd');
 Route::post('/generate-merged-pdf', [PdfController::class, 'generateMergedPDF'])
     ->name('generate.merged.pdf');
 Route::patch('/hhmd/update-status/{id}', [HHMDFormController::class, 'updateStatus'])->name('hhmd.updateStatus');
@@ -142,7 +143,7 @@ Route::post('/hhmdform/pscpselatan/filter', [DashboardController::class, 'filter
 
 
 Route::get('/review/wtmd/{id}', [WTMDFormController::class, 'review'])->name('review.wtmd.reviewwtmd');
-Route::get('/pdf/{id}', [PdfController::class, 'generatePDF'])->name('pdf.wtmd');
+Route::get('/pdf/wtmd/{id}', [PdfController::class, 'generatePDF'])->name('pdf.wtmd');
 Route::post('/wtmd/{id}/save-supervisor-signature', [WTMDFormController::class, 'saveSupervisorSignature'])->name('wtmd.saveSupervisorSignature');
 Route::get('/daily-test/wtmd', [DailyTestController::class, 'wtmdLayout'])->name('daily-test.wtmd');
 Route::post('/daily-test/wtmd/filter', [DailyTestController::class, 'filterWtmdByDate'])->name('daily-test.wtmd.filter');

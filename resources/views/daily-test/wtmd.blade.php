@@ -92,34 +92,47 @@
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
-        let lastX = 0; // Menyimpan posisi X terakhir
-        let lastY = 0; // Menyimpan posisi Y terakhir
+        let lastX = 0;
+        let lastY = 0;
 
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        document.getElementById('clearSignature').addEventListener('click', clearCanvas);
-        document.getElementById('saveOfficerSignature').addEventListener('click', saveOfficerSignature);
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            return [x, y];
+        }
 
         function startDrawing(e) {
             isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY]; // Menggunakan offsetX dan offsetY
+            e.preventDefault(); // Prevent scrolling on touch devices
+            const coords = e.type.includes('mouse') ? 
+                [e.offsetX, e.offsetY] : 
+                getCoordinates(e.touches[0]);
+            
+            [lastX, lastY] = coords;
             draw(e);
         }
 
         function draw(e) {
             if (!isDrawing) return;
+            e.preventDefault(); // Prevent scrolling on touch devices
+            
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.strokeStyle = '#000';
 
+            const coords = e.type.includes('mouse') ? 
+                [e.offsetX, e.offsetY] : 
+                getCoordinates(e.touches[0]);
+
             ctx.beginPath();
-            ctx.moveTo(lastX, lastY); // Menggunakan posisi terakhir
-            ctx.lineTo(e.offsetX, e.offsetY); // Menggunakan offsetX dan offsetY
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(coords[0], coords[1]);
             ctx.stroke();
-            [lastX, lastY] = [e.offsetX, e.offsetY]; // Memperbarui posisi terakhir
+            [lastX, lastY] = coords;
         }
 
         function stopDrawing() {
@@ -127,16 +140,26 @@
             ctx.beginPath();
         }
 
-        function clearCanvas() {
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        document.getElementById('clearSignature').addEventListener('click', function() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        });
 
-        function saveOfficerSignature() {
-        const officerSignatureData = canvas.toDataURL('image/png');
-        document.getElementById('officerSignatureData').value = officerSignatureData;
-        alert('Tanda tangan Officer disimpan!');
-        }
-
+        document.getElementById('saveOfficerSignature').addEventListener('click', function() {
+            const officerSignatureData = canvas.toDataURL('image/png');
+            document.getElementById('officerSignatureData').value = officerSignatureData;
+            alert('Tanda tangan Officer disimpan!');
+        });
     });
 
 </script>

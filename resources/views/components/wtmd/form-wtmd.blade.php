@@ -1,14 +1,14 @@
-<div class="bg-white p-4" style="width: 210mm; min-height: 297mm;">
+<div class="bg-white p-4" style="width: 100%; min-height: 297mm;">
     <div id="format" class="mx-auto">
         <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
-            <div class="flex items-center justify-between">
-                <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20">
-                <h1 class="text-xl font-bold text-center flex-grow px-2">
+            <div class="flex flex-col sm:flex-row items-center justify-between">
+                <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20 mb-2 sm:mb-0 mx-auto sm:mx-0">
+                <h1 class="text-sm sm:text-xl font-bold text-center flex-grow px-2">
                     CHECK LIST PENGUJIAN HARIAN<br>
                     PENDETEKSI LOGAM GENGGAM<br>
                     (WALK THOURGH METAL DETECTOR/WTMD)
                 </h1>
-                <img src="{{ asset('images/injourney-airports.png') }}" class="w-36 h-28">
+                <img src="{{ asset('images/injourney-airports.png') }}" class="w-36 h-28 mt-2 sm:mt-0 mx-auto sm:mx-0">
             </div>
         </div>
         <form id="wtmdForm" action="{{ route('submit.wtmd') }}" method="POST" enctype="multipart/form-data" onsubmit="onFormSubmit(event)" class="mt-0">
@@ -85,8 +85,8 @@
                     </div>
                 </div>
                 <div class="border-t-2 border-x-2 border-black mx-10">
-                    <div class="flex flex-row">
-                        <div class="flex-1 relative mr-2 mt-8 mb-12">
+                    <div class="flex flex-col sm:flex-row">
+                        <div class="w-full sm:w-1/2 relative mr-2 mt-8 mb-12">
                             <img src="/images/tampakdepan.png" alt="Tampak Depan" class="absolute inset-0 w-full h-full object-contain z-0">
                             <div class="relative z-10 h-96 flex flex-col justify-center">
                                 <div class="flex flex-col space-y-2 mx-5 mt-10">
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-1 relative ml-2 mt-8 mb-12">
+                        <div class="w-full sm:w-1/2 relative ml-2 mt-8 mb-12">
                             <img src="/images/tampakbelakang.png" alt="Tampak Belakang" class="absolute inset-0 w-full h-full object-contain z-0">
                             <div class="relative z-10 h-96 flex">
                                 <div class="absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col space-y-4 pr-4">
@@ -202,8 +202,7 @@
                 <input type="hidden" id="result" name="result" value="">
 
                 <div class="border-t-2 border-black p-4">
-                    <h3 class="text-sm font-bold mb-2">Personel Pengamanan Penerbangan</h3>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="grid grid-rows-2 gap-2 items-center">
                             <div class="text-center self-end">
                                 <h4 class="font-bold">
@@ -220,39 +219,37 @@
                             </div>
                         </div>
                         <div>
-                            <!-- Kolom Kanan (Canvas dan Tombol Clear) -->
-                            <div class="flex flex-col items-start">
-                                <canvas class="border border-black rounded-md" id="signatureCanvas" width="200" height="100"></canvas>
-                                <div class="mt-2 flex items-start">
-                                    <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded w-20">Clear</button>
-                                    <button type="button" id="saveOfficerSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded ml-2 w-20">Save</button>
-                                </div>
-                                <input type="hidden" name="officer_signature_data" id="officerSignatureData">
+                            <canvas class="border border-black rounded-md w-full" id="signatureCanvas" width="400" height="200"></canvas>
+                            <div class="mt-2 flex items-start">
+                                <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded w-1/2 mr-1">Clear</button>
+                                <button type="button" id="saveOfficerSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded w-1/2 ml-1">Save</button>
                             </div>
+                            <input type="hidden" name="officer_signature_data" id="officerSignatureData">
                         </div>
                     </div>
                 </div>
             </div>
-
-            <input type="hidden" name="status" value="pending_supervisor">
-
-            <div class="mt-4">
-                <div class="mb-4">
-                    <label for="supervisor_id" class="block text-gray-700 font-bold mb-2">Pilih Supervisor:</label>
-                    <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-2 py-1" required>
-                        <option value="">Pilih Supervisor</option>
-                        @foreach(\App\Models\User::where('role', 'supervisor')->get() as $supervisor)
-                            <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
-                        Submit to Approver
-                    </button>
-                </div>
-            </div>
-        </form>
     </div>
+
+    <input type="hidden" name="status" value="pending_supervisor">
+
+    <div class="mt-4">
+        <div class="mb-4">
+            <label for="supervisor_id" class="block text-gray-700 font-bold mb-2">Pilih Supervisor:</label>
+            <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-2 py-1" required>
+                <option value="">Pilih Supervisor</option>
+                @foreach(\App\Models\User::where('role', 'supervisor')->get() as $supervisor)
+                <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                Submit to Approver
+            </button>
+        </div>
+    </div>
+    </form>
+</div>
 </div>

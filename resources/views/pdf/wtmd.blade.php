@@ -6,10 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <style>
+        .custom-checkbox-alt {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #b9b9b9;
+        border-radius: 3px;
+        cursor: not-allowed;
+    }
 
+    .custom-checkbox-alt:checked {
+        background-color: #1e3bdd;
+        position: relative;
+    }
+
+    .custom-checkbox-alt:checked::before {
+        content: '✓';
+        position: absolute;
+        color: white;
+        font-size: 12px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .custom-radio {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #b9b9b9;
+        border-radius: 50%;
+        cursor: not-allowed;
+    }
+
+    .custom-radio:checked {
+        background-color: white;
+        position: relative;
+    }
+
+    .custom-radio:checked::before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #1e3bdd;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    </style>
+</head>
 <body class="mt-5">
-    <div class="bg-white w-[210mm] h-[297mm] mx-auto overflow-hid">
+    <div class="bg-white w-[210mm] h-[297mm] mx-auto overflow-hidden">
         <div id="format" class="mx-auto">
             <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-0">
                 <div class="flex items-center justify-between">

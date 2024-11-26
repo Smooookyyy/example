@@ -330,8 +330,7 @@
                                             class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                             Tinjau
                                         </a>
-                                        @if($form->status == 'approved' && Auth::check() && Auth::user()->role ===
-                                        'superadmin')
+                                        @if($form->status == 'approved' && Auth::check() && Auth::user()->role === 'superadmin')
                                         <a href="{{ route('pdf.wtmd', $form->id) }}" target="_blank"
                                             class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                                             <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor"

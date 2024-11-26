@@ -19,13 +19,14 @@ class PdfController extends Controller
         $this->pdfService = $pdfService;
     }
 
-    public function generatePDF($id, $type = 'hhmdsaved')
+    public function generatePDF($id)
     {
         try {
-            if ($type === 'wtmdsaved') {
+            $form = hhmdsaved::with('supervisor')->find($id);
+            if (!$form) {
                 $form = wtmdsaved::with('supervisor')->findOrFail($id);
             } else {
-                $form = hhmdsaved::with('supervisor')->findOrFail($id);
+                $form = $form->load('supervisor');
             }
             return $this->pdfService->generateSinglePdf($form);
         } catch (\Exception $e) {

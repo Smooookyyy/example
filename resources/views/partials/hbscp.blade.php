@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="container mx-auto px-4 py-2 sm:py-8">
     <div class="bg-white shadow-md rounded-lg">
         <!-- Header Section -->
@@ -9,7 +8,6 @@
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
                     {{ __('Formulir HHMD') }}
                 </h1>
-
                 <!-- Split the buttons into two groups -->
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                     <!-- PDF Download Section -->
@@ -24,7 +22,6 @@
                             </svg>
                             <span>Unduh PDF Gabungan</span>
                         </button>
-
                         <!-- Date Picker Dropdown -->
                         <div x-show="showDatePicker" @click.away="showDatePicker = false"
                             class="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl z-10 p-4">
@@ -45,9 +42,9 @@
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md">
                                 </div>
                                 @if ($errors->any())
-                                <div class="text-red-500 text-sm">
-                                    {{ $errors->first() }} <!-- Menampilkan pesan kesalahan -->
-                                </div>
+                                    <div class="text-red-500 text-sm">
+                                        {{ $errors->first() }} <!-- Menampilkan pesan kesalahan -->
+                                    </div>
                                 @endif
                                 <div class="flex justify-end space-x-2">
                                     <button type="button" @click="showDatePicker = false"
@@ -63,7 +60,6 @@
                         </div>
                     </div>
                     @endif
-
                     <!-- Filter Button -->
                     <div class="relative w-full sm:w-auto" x-data="{ isOpen: false }">
                         <button id="filterButton"
@@ -75,7 +71,6 @@
                             </svg>
                             <span>Filter</span>
                         </button>
-
                         <!-- Filter Dropdown -->
                         <div id="filterDropdown"
                             class="absolute right-0 mt-2 w-full sm:w-72 bg-white rounded-lg shadow-xl hidden z-10">
@@ -110,7 +105,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Tabs Navigation (Responsive) -->
             <div class="flex flex-wrap space-x-1 justify-center sm:justify-start">
                 <button onclick="switchTab('pending')"
@@ -125,7 +119,6 @@
                 </button>
             </div>
         </div>
-
         <!-- Content Section -->
         <div class="p-6">
             @if (session('status'))
@@ -133,13 +126,11 @@
                 <p class="font-medium">{{ session('status') }}</p>
             </div>
             @endif
-
             <!-- Pending Forms Tab -->
             <div id="pending-content" class="tab-content">
                 <h2 class="text-xl font-bold text-black">Formulir HHMD Pos HBSCP - Belum Diperiksa</h2>
                 <h4 class="text-sm font-light text-black mb-4">Daftar formulir HHMD Pos HBSCP yang belum selesai
                     diperiksa</h4>
-
                 @if(isset($startDate) && isset($endDate))
                 <div class="mb-4 p-4 bg-blue-100 text-blue-700 rounded-lg">
                     <p>Menampilkan hasil dari <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
@@ -148,7 +139,6 @@
                         Filter</a>
                 </div>
                 @endif
-
                 @if($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
                     @foreach($errors->all() as $error)
@@ -156,7 +146,6 @@
                     @endforeach
                 </div>
                 @endif
-
                 @if($allHhmdForms->where('status', 'pending_supervisor')->count() > 0)
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
@@ -229,19 +218,16 @@
                 </div>
                 @endif
             </div>
-
             <!-- All Forms Tab -->
             <div id="all-content" class="tab-content hidden">
                 <h2 class="text-xl font-bold text-black">Semua Formulir HHMD Pos HBSCP</h2>
                 <h4 class="text-sm font-light text-black mb-4">Daftar lengkap semua formulir HHMD Pos HBSCP</h4>
-
                 @if(isset($startDate) && isset($endDate))
                 <div class="mb-4 p-4 bg-blue-100 text-blue-700 rounded-lg">
                     <p>Menampilkan hasil dari <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
                         hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.</p>
                     <a href="{{ route('hhmdform') }}" class="text-blue-600 underline hover:text-blue-800">Reset
                         Filter</a>
-
                     <!-- Tombol untuk Unduh PDF Gabungan (hanya untuk superadmin) -->
                     @if(Auth::check() && Auth::user()->role === 'superadmin')
                     <form action="{{ route('generate.merged.pdf') }}" method="POST" class="mt-4">
@@ -257,7 +243,6 @@
                     @endif
                 </div>
                 @endif
-
                 @if($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
                     @foreach($errors->all() as $error)
@@ -265,7 +250,6 @@
                     @endforeach
                 </div>
                 @endif
-
                 @if($allHhmdForms->count() > 0)
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
@@ -355,7 +339,6 @@
                 </div>
                 @endif
             </div>
-
             <!-- Back to Dashboard (Responsive) -->
             <div class="mt-6 flex justify-center sm:justify-start">
                 <a href="{{ route('dashboard') }}"
@@ -371,119 +354,101 @@
     </div>
 </div>
 @endsection
-
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        function setupResponsiveElements() {
-            const filterButton = document.getElementById('filterButton');
-            const filterDropdown = document.getElementById('filterDropdown');
-
-            // Responsive tab switching
-            const tabs = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => {
-                        t.classList.remove('bg-blue-600', 'text-white');
-                        t.classList.add('text-gray-600', 'hover:text-gray-800', 'hover:bg-gray-100');
-                    });
-
-                    // Hide all tab contents
-                    tabContents.forEach(content => content.classList.add('hidden'));
-
-                    // Activate the clicked tab
-                    tab.classList.add('bg-blue-600', 'text-white');
-                    tab.classList.remove('text-gray-600', 'hover:text-gray-800', 'hover:bg-gray-100');
-
-                    // Show the corresponding tab content
-                    const contentId = tab.getAttribute('onclick').match(/'([^']+)'/)[1] + '-content';
-                    document.getElementById(contentId).classList.remove('hidden');
+    function setupResponsiveElements() {
+        const filterButton = document.getElementById('filterButton');
+        const filterDropdown = document.getElementById('filterDropdown');
+        // Responsive tab switching
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('bg-blue-600', 'text-white');
+                    t.classList.add('text-gray-600', 'hover:text-gray-800', 'hover:bg-gray-100');
                 });
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.add('hidden'));
+                // Activate the clicked tab
+                tab.classList.add('bg-blue-600', 'text-white');
+                tab.classList.remove('text-gray-600', 'hover:text-gray-800', 'hover:bg-gray-100');
+                // Show the corresponding tab content
+                const contentId = tab.getAttribute('onclick').match(/'([^']+)'/)[1] + '-content';
+                document.getElementById(contentId).classList.remove('hidden');
             });
-
-            // Responsive filter dropdown
-            if (filterButton && filterDropdown) {
-                filterButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    filterDropdown.classList.toggle('hidden');
-                });
-
-                // Close dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!filterDropdown.contains(e.target) && !filterButton.contains(e.target)) {
-                        filterDropdown.classList.add('hidden');
-                    }
-                });
-            }
-
-            // Date filter form handling
-            const dateFilterForm = document.getElementById('dateFilterForm');
-            if (dateFilterForm) {
-                dateFilterForm.addEventListener('submit', (e) => {
-                    const startDate = document.getElementById('start_date').value;
-                    const endDate = document.getElementById('end_date').value;
-
-                    if (!startDate || !endDate) {
-                        e.preventDefault();
-                        alert('Harap isi tanggal mulai dan akhir.');
-                        return;
-                    }
-
-                    // Optional: Add loading state or validation
-                    filterButton.disabled = true;
-                    filterButton.innerHTML = 'Memproses...';
-                });
-            }
-
-            // Initial tab setup
-            const initialTab = document.getElementById('tab-pending');
-            if (initialTab) {
-                initialTab.click();
-            }
-
-            // Responsive table handling
-            const tables = document.querySelectorAll('table');
-            tables.forEach(table => {
-                const wrapper = document.createElement('div');
-                wrapper.classList.add('overflow-x-auto');
-                table.parentNode.insertBefore(wrapper, table);
-                wrapper.appendChild(table);
+        });
+        // Responsive filter dropdown
+        if (filterButton && filterDropdown) {
+            filterButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!filterDropdown.contains(e.target) && !filterButton.contains(e.target)) {
+                    filterDropdown.classList.add('hidden');
+                }
             });
         }
-
-        // Handle resize and orientation change
-        function handleResponsiveAdjustments() {
-            const viewportWidth = window.innerWidth;
-            const filterButton = document.getElementById('filterButton');
-            const filterDropdown = document.getElementById('filterDropdown');
-
-            // Adjust elements based on screen size
-            if (viewportWidth < 640) {
-                // Mobile-specific adjustments
-                if (filterDropdown) {
-                    filterDropdown.classList.add('w-full');
-                    filterDropdown.classList.remove('w-72');
+        // Date filter form handling
+        const dateFilterForm = document.getElementById('dateFilterForm');
+        if (dateFilterForm) {
+            dateFilterForm.addEventListener('submit', (e) => {
+                const startDate = document.getElementById('start_date').value;
+                const endDate = document.getElementById('end_date').value;
+                if (!startDate || !endDate) {
+                    e.preventDefault();
+                    alert('Harap isi tanggal mulai dan akhir.');
+                    return;
                 }
-            } else {
-                // Desktop/Tablet adjustments
-                if (filterDropdown) {
-                    filterDropdown.classList.remove('w-full');
-                    filterDropdown.classList.add('w-72');
-                }
+                // Optional: Add loading state or validation
+                filterButton.disabled = true;
+                filterButton.innerHTML = 'Memproses...';
+            });
+        }
+        // Initial tab setup
+        const initialTab = document.getElementById('tab-pending');
+        if (initialTab) {
+            initialTab.click();
+        }
+        // Responsive table handling
+        const tables = document.querySelectorAll('table');
+        tables.forEach(table => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('overflow-x-auto');
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    }
+    // Handle resize and orientation change
+    function handleResponsiveAdjustments() {
+        const viewportWidth = window.innerWidth;
+        const filterButton = document.getElementById('filterButton');
+        const filterDropdown = document.getElementById('filterDropdown');
+        // Adjust elements based on screen size
+        if (viewportWidth < 640) {
+            // Mobile-specific adjustments
+            if (filterDropdown) {
+                filterDropdown.classList.add('w-full');
+                filterDropdown.classList.remove('w-72');
+            }
+        } else {
+            // Desktop/Tablet adjustments
+            if (filterDropdown) {
+                filterDropdown.classList.remove('w-full');
+                filterDropdown.classList.add('w-72');
             }
         }
-
-        // Initial setup
-        setupResponsiveElements();
-        handleResponsiveAdjustments();
-
-        // Add event listeners for responsive adjustments
-        window.addEventListener('resize', handleResponsiveAdjustments);
-        window.addEventListener('orientationchange', handleResponsiveAdjustments);
-    });
+    }
+    // Initial setup
+    setupResponsiveElements();
+    handleResponsiveAdjustments();
+    // Add event listeners for responsive adjustments
+    window.addEventListener('resize', handleResponsiveAdjustments);
+    window.addEventListener('orientationchange', handleResponsiveAdjustments);
+});
 </script>
-
 @endsection

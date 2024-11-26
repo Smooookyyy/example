@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Models\hhmdsaved;
+use App\Models\wtmdsaved;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\LaravelPdf\Enums\Format;
 use iio\libmergepdf\Merger;
@@ -26,11 +27,13 @@ class PdfServices
         }
     }
 
-    public function generateSinglePdf(hhmdsaved $form): mixed
+    public function generateSinglePdf(hhmdsaved|wtmdsaved $form, string $type = 'hhmd'): mixed
     {
-        return Pdf::view('pdf.hhmd', compact('form'))
+        $view = $type === 'wtmd' ? 'pdf.wtmd' : 'pdf.hhmd';
+        $fileName = $type === 'wtmd' ? "wtmd-{$form->id}.pdf" : "hhmd-{$form->id}.pdf";
+        return Pdf::view($view, compact('form'))
             ->format(Format::A4)
-            ->name("hhmd-{$form->id}.pdf")
+            ->name($fileName)
             ->download();
     }
 
@@ -58,7 +61,8 @@ class PdfServices
         $tempFiles = [];
         foreach ($forms as $form) {
             $tempPath = $this->tempDir . '/' . uniqid() . '.pdf';
-            Pdf::view('pdf.hhmd', compact('form'))
+            $view = $form instanceof wtmdsaved ? 'pdf.wtmd' : 'pdf.hhmd';
+            Pdf::view($view, compact('form'))
                 ->format(Format::A4)
                 ->save($tempPath);
             $tempFiles[] = $tempPath;
